@@ -187,6 +187,9 @@ h1, h2, h3, h4 { font-family: var(--bl-display); font-weight: 400; color: var(--
 .bl-choice { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--bl-line-2); background: var(--bl-paper); color: var(--bl-ink); }
 .bl-choice[aria-checked="true"] { border-color: var(--bl-primary); background: var(--bl-surface); box-shadow: inset 0 0 0 1px var(--bl-primary); }
 .bl-choice:disabled { opacity: .5; }
+/* The method's or courier's badge, beside the price: names stay aligned whether a row has one or not. */
+.bl-choice-logo { display: block; height: 20px; width: auto; max-width: 64px; object-fit: contain; flex: none; }
+@media (max-width: 480px) { .bl-choice-logo { height: 16px; max-width: 48px; } }
 .bl-radio { width: 18px; height: 18px; border-radius: 999px; border: 1.5px solid var(--bl-line-3); display: grid; place-items: center; flex: none; }
 .bl-choice[aria-checked="true"] .bl-radio { border-color: var(--bl-primary); }
 .bl-choice[aria-checked="true"] .bl-radio::after { content: ''; width: 8px; height: 8px; border-radius: 999px; background: var(--bl-primary); }
@@ -484,7 +487,10 @@ body[data-menu="1"] { overflow: hidden; }
 .bl-footer a.bl-social:hover { background: var(--bl-glass); color: var(--bl-on-dark); }
 .bl-footer-chips { display: flex; flex-direction: column; gap: 8px; }
 .bl-footer-chips > div { display: flex; flex-wrap: wrap; gap: 6px; }
-.bl-footer-chips span { font-size: 12px; padding: 5px 10px; border-radius: 999px; background: var(--bl-glass); }
+.bl-footer-chips span { display: inline-flex; align-items: center; min-height: 28px; box-sizing: border-box; font-size: 12px; padding: 5px 10px; border-radius: 999px; background: var(--bl-glass); }
+/* A badge sits on the page's own warm white: a full-colour mark is unreadable on the green. */
+.bl-footer-chips .bl-logo-chip { background: var(--bl-surface); padding: 5px 12px; }
+.bl-logo-chip img { display: block; height: 16px; width: auto; max-width: 76px; object-fit: contain; }
 .bl-footer-bottom { max-width: var(--bl-max); margin: 0 auto; padding: 0 var(--bl-gutter); }
 .bl-footer-bottom > div { padding: 20px 0 28px; border-top: 1px solid var(--bl-on-dark-rule); font-size: 13px; color: var(--bl-on-dark-3); }
 

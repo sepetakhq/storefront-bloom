@@ -4,8 +4,8 @@
 
 import { saleState, overlayLabel, AVAILABLE } from '@sepetakhq/storefront-kit/lib/availability';
 import { countsStock, isSoldOut, leadDays, maxQty, shortNote } from '@sepetakhq/storefront-kit/lib/preorder';
-import { MAX_QTY } from '@sepetakhq/storefront-kit/lib/constants';
-import { fmt } from '@sepetakhq/storefront-kit/shared/format';
+import { fmt, formatQty } from '@sepetakhq/storefront-kit/shared/format';
+import { unitScale } from '@sepetakhq/storefront-kit/shared/qty';
 import { NAV_ROUTES } from '@sepetakhq/storefront-kit/shared/navRoutes';
 
 /**
@@ -52,7 +52,7 @@ export function quickAddState(p, lineQty = 0) {
   if (!p) return { kind: 'disabled', max: 0 };
   if (p.has_variants && !isSoldOut(p)) return { kind: 'variants', max: 0 };
   if (saleState(p) !== AVAILABLE || isSoldOut(p)) return { kind: 'disabled', max: 0 };
-  const max = Math.min(maxQty(p), MAX_QTY);
+  const max = maxQty(p);
   return lineQty > 0 ? { kind: 'stepper', max } : { kind: 'add', max };
 }
 
@@ -66,7 +66,7 @@ export function cardNote(p) {
   if (p.preorder) return shortNote(p) || 'Pre-order';
   if (!countsStock(p) || isSoldOut(p) || saleState(p) !== AVAILABLE) return '';
   const n = Number(p.stock ?? 0);
-  return n > 0 && n <= LOW_STOCK ? `Sisa ${n} lagi` : '';
+  return n > 0 && n <= LOW_STOCK * unitScale(p.unit) ? `Sisa ${formatQty(n, p.unit)} lagi` : '';
 }
 
 /**
@@ -81,7 +81,7 @@ export function detailNote(p) {
   }
   if (!countsStock(p) || isSoldOut(p)) return '';
   const n = Number(p.stock ?? 0);
-  return n > 0 && n <= LOW_STOCK ? `Sisa ${n} lagi — segera checkout` : '';
+  return n > 0 && n <= LOW_STOCK * unitScale(p.unit) ? `Sisa ${formatQty(n, p.unit)} lagi — segera checkout` : '';
 }
 
 /** "Pilih warna dulu" / "Pilih ukuran & warna dulu", for the axes still open. */

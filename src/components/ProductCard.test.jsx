@@ -103,6 +103,21 @@ describe('ProductCard', () => {
     expect(cart.remove).toHaveBeenCalledWith('p1:');
   });
 
+  it('steps a kg line by its step, prints it in kg, and removes it below the minimum', () => {
+    cart.items = [{ productId: 'p1', variantId: null, qty: 500 }];
+    card(product({ unit: 'kg', qty_step: 100, qty_min: 500, stock: 5000 }));
+    expect(screen.getByText('0,5 kg')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Tambah' }));
+    expect(cart.setQty).toHaveBeenCalledWith('p1:', 600);
+    fireEvent.click(screen.getByRole('button', { name: 'Kurangi' }));
+    expect(cart.remove).toHaveBeenCalledWith('p1:');
+  });
+
+  it('counts a low kg stock in kg', () => {
+    card(product({ unit: 'kg', qty_step: 100, qty_min: 500, stock: 2500 }));
+    expect(screen.getByText('Sisa 2,5 kg lagi')).toBeTruthy();
+  });
+
   it('sends a variant product to its page instead of adding, priced from', () => {
     const { container } = card(product({ has_variants: true, price_max: 249000 }));
     const link = screen.getByRole('link', { name: 'Pilih varian Almond Panggang' });
